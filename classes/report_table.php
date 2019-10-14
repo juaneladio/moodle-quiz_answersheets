@@ -136,4 +136,51 @@ class report_table extends \quiz_attempts_report_table {
         }
     }
 
+    /**
+     * Generate the display of the create attempt column.
+     *
+     * @param object $row The raw data for this row.
+     * @return string The value for this cell of the table.
+     */
+    public function col_create_attempt($row): string {
+        $html = '';
+        $attempts = quiz_get_user_attempts($this->quiz->id, $row->userid, 'all');
+        $quizobj = \quiz::create($this->quiz->id, $row->userid);
+        if (utils::can_create_attempt($quizobj, $attempts)) {
+            $lastattempt = end($attempts);
+            if (empty($attempts) || $row->attempt == $lastattempt->id) {
+                $buttontext = get_string('create_attempt', 'quiz_answersheets');
+                $userdetails = utils::get_user_details($row, $this->context);
+                $message = get_string('create_attempt_modal_description', 'quiz_answersheets', $userdetails);
+                $attributes = [
+                        'class' => 'btn btn-secondary mr-1 create-attempt-btn',
+                        'name' => 'create_attempt',
+                        'data-message' => $message,
+                        'data-user-id' => $row->userid,
+                        'data-quiz-id' => $this->quiz->id,
+                        'data-url' => $this->options->get_url()->out(false)
+                ];
+                $html = html_writer::tag('button', $buttontext, $attributes);
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * Add highlight class to last changed row
+     *
+     * @param stdClass $attempt
+     * @return string
+     */
+    public function get_row_class($attempt): string {
+        $options = $this->options;
+        $class = parent::get_row_class($attempt);
+        if (!is_null($options->lastchanged)) {
+            if ($options->lastchanged > 0 && $options->lastchanged == $attempt->attempt) {
+                $class .= ' lastchanged';
+            }
+        }
+        return $class;
+    }
+
 }
