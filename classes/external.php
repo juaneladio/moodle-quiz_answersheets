@@ -64,7 +64,6 @@ class quiz_answersheets_external extends external_api {
      * @return array
      */
     public static function create_attempt($quizid, $userid) {
-        global $USER, $DB;
         $message = '';
 
         $params = self::validate_parameters(self::create_attempt_parameters(), [
@@ -141,15 +140,15 @@ class quiz_answersheets_external extends external_api {
         // Nasty hack for CodeRunner.
         // Unfortunately CodeRunner stores global $USER into question data. We need to work-around this.
         // This hack will be removed once https://github.com/trampgeek/moodle-qtype_coderunner/issues/86 closed.
-        $realuser = $USER;
-        $USER = $DB->get_record('user', ['id' => $userid]);
+        //$realuser = $USER;
+        //$USER = $DB->get_record('user', ['id' => $userid]);
         if (!($quizobj->get_quiz()->attemptonlast && $lastattempt)) {
             $attempt = quiz_start_new_attempt($quizobj, $quba, $attempt, $attemptnumber, $timenow,
                     $forcedrandomquestions, $forcedvariants);
         } else {
             $attempt = quiz_start_attempt_built_on_last($quba, $attempt, $lastattempt);
         }
-        $USER = $realuser;
+        //$USER = $realuser;
         // End of nasty hack for CodeRunner.
 
         $transaction = $DB->start_delegated_transaction();

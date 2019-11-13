@@ -39,7 +39,7 @@ class attempt_created extends base_event {
      * Init method.
      */
     protected function init() {
-        $this->data['crud'] = 'w';
+        $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
     }
 

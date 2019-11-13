@@ -148,6 +148,8 @@ class report_table extends \quiz_attempts_report_table {
      * @return string The value for this cell of the table.
      */
     public function col_create_attempt($row): string {
+        global $OUTPUT;
+
         if ($row->used_all_attempts) {
             return '';
         }
@@ -159,18 +161,17 @@ class report_table extends \quiz_attempts_report_table {
         }
         if (!isset($this->userdetails[$row->userid])) {
             $userdetails = utils::get_user_details($row, $this->context);
-            $this->userdetails[$row->userid] = get_string('create_attempt_modal_description', 'quiz_answersheets', $userdetails);
+            $this->userdetails[$row->userid] = get_string('createareyousuremessage', 'quiz_answersheets', $userdetails);
         }
-        $buttontext = get_string('create_attempt', 'quiz_answersheets');
-        $attributes = [
-                'class' => 'btn btn-secondary mr-1 create-attempt-btn',
-                'name' => 'create_attempt',
-                'data-message' => $this->userdetails[$row->userid],
-                'data-user-id' => $row->userid,
-                'data-quiz-id' => $this->quiz->id,
-                'data-url' => $this->options->get_url()->out(false)
-        ];
-        return html_writer::tag('button', $buttontext, $attributes);
+
+        return $OUTPUT->action_link(
+                new moodle_url('/mod/quiz/report/answersheets/createattempt.php',
+                        ['cmid' => $this->context->instanceid, 'userid' => $row->userid, 'sesskey' => sesskey(),
+                                'redirect' => $this->options->get_url()->out_as_local_url(false)]),
+                get_string('create_attempt', 'quiz_answersheets'),
+                new \confirm_action($this->userdetails[$row->userid], null,
+                        get_string('create', 'quiz_answersheets'), get_string('cancel')),
+                        ['class' => 'btn btn-secondary create-attempt-btn osep-button']);
     }
 
     /**

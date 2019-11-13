@@ -216,12 +216,6 @@ class quiz_answersheets_report extends quiz_attempts_report {
     public function add_create_attempt_column(table_sql $table, &$columns, &$headers) {
         if (!$table->is_downloading() && has_capability('quiz/answersheets:createattempt', $this->context)) {
             global $PAGE;
-            $PAGE->requires->js_call_amd('quiz_answersheets/create_attempt_dialog', 'init');
-            $PAGE->requires->strings_for_js([
-                    'create_attempt_modal_title',
-                    'create_attempt_modal_button',
-                    'create_attempt_modal_description'
-            ], 'quiz_answersheets');
             $columns[] = 'create_attempt';
             $headers[] = get_string('create_attempt', 'quiz_answersheets');
         }

@@ -58,10 +58,9 @@ $string['submit_student_responses_dialog_content'] = 'Are you sure you want to s
 $string['submit_student_responses_title'] = '{$a}: Submit student responses';
 $string['strftime_header'] = '%d %b %Y, %H:%M';
 $string['user_identity_fields'] = ' ({$a})';
-$string['create_attempt'] = 'Create Attempt';
-$string['create_attempt_modal_title'] = 'Confirmation';
-$string['create_attempt_modal_description'] = 'Are you sure you want to create a quiz attempt for {$a}?';
-$string['create_attempt_modal_button'] = 'Create';
+$string['create'] = 'Create';
+$string['create_attempt'] = 'Create attempt';
+$string['createareyousuremessage'] = 'Are you sure you want to create a quiz attempt for {$a}?';
 $string['webservicecannotcreateattempts'] = 'Cannot create attempt';
 
 // Question instruction.

@@ -32,6 +32,10 @@ namespace quiz_answersheets\event;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class responses_submitted extends base_event {
+    protected function init() {
+        $this->data['crud'] = 'u';
+        $this->data['edulevel'] = self::LEVEL_TEACHING;
+    }
 
     public static function get_name() {
         return get_string('event_responses_submitted', 'quiz_answersheets');
